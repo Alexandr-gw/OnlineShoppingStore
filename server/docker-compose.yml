@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+ # client:
+  #  container_name: client
+  #  image: client:0.0.1 
+  #  build:
+  #    context: .
+  #  ports:
+  #  - "3002:3002"
+  #  env_file:
+  #    - client/.env
+  #  depends_on:
+  #    - server
+  #  network_mode: host
+   # restart: always
+  server:
+    container_name: server
+    image: server:0.0.1 
+    build:
+      context: .
+    ports:
+    - "3001:3001"
+    env_file:
+      - .env
+    environment:
+      - EXTERNAL_PORT=3001
+      - DB_NAME=online_store
+      - DB_USER=Galaxy
+      - DB_PASSWORD=admin
+      - DB_HOST=postgres
+    #volumes:
+    #  - .:/app
+    #  -  /app/server
+    depends_on:
+      - postgres
+   # restart: always
+  postgres:
+    container_name: postgres
+    image: "postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=Galaxy
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=online_store
+    volumes:
+      - pgdata:/var/lib/postgresql/data 
+    env_file:
+      - .env
+    
+   
+    
+    #restart: always
+
+volumes:
+  pgdata: {}
+    
