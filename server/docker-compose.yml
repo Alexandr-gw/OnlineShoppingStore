@@ -19,8 +19,9 @@ services:
     image: server:0.0.1 
     build:
       context: .
+    command: npm run dev
     ports:
-    - "3001:3001"
+    - 5000:5000
     env_file:
       - .env
     environment:
@@ -29,9 +30,13 @@ services:
       - DB_USER=Galaxy
       - DB_PASSWORD=admin
       - DB_HOST=postgres
-    #volumes:
-    #  - .:/app
+    volumes:
+      - .:/app
+    #  - ./node_modules:/app/node_modules
     #  -  /app/server
+    #volumes:
+    #  - ./src:/usr/app/
+    #  - ./src/node_modules:/usr/app/node_modules
     depends_on:
       - postgres
    # restart: always
