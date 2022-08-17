@@ -1,13 +1,19 @@
-FROM node:alpine
+FROM node:16
 
-RUN addgroup app && adduser -S -G app app 
-USER app
-
+# Create app directory
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . . 
- 
-EXPOSE 3000
 
-CMD ["npm", "start"]
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
+
+# Bundle app source
+COPY . .
+
+EXPOSE 3000
+#CMD [ "node", "index.js" ]

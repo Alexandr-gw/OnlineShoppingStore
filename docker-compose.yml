@@ -1,29 +1,35 @@
 version: '3.8'
 
 services:
- # client:
-  #  container_name: client
-  #  image: client:0.0.1 
-  #  build:
-  #    context: .
-  #  ports:
-  #  - "3002:3002"
-  #  env_file:
-  #    - client/.env
-  #  depends_on:
-  #    - server
+  client:
+    container_name: client
+    image: client:0.0.1 
+    stdin_open: true
+    build:
+      context: ./client
+    command: npm start
+    ports:
+    - 3000:3000
+ #  networks: onlineStore
+    env_file:
+      - client/.env
+    #volumes:
+    #  - ./src:/app/src
+    depends_on:
+      - server
   #  network_mode: host
-   # restart: always
+  # restart: always
   server:
-    container_name: server
+    container_name: server_shop
     image: server:0.0.1 
     build:
-      context: .
+      context: ./server
     command: npm run dev
     ports:
     - 5000:5000
+    #networks: onlineStore
     env_file:
-      - .env
+      - server/.env
     environment:
       - EXTERNAL_PORT=3001
       - DB_NAME=online_store
@@ -41,10 +47,11 @@ services:
       - postgres
    # restart: always
   postgres:
-    container_name: postgres
+    container_name: postgres_shop
     image: "postgres"
     ports:
-      - "5432:5432"
+      - 5432:5432
+    #networks: onlineStore
     environment:
       - POSTGRES_USER=Galaxy
       - POSTGRES_PASSWORD=admin
@@ -52,7 +59,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data 
     env_file:
-      - .env
+      - server/.env
     
    
     
