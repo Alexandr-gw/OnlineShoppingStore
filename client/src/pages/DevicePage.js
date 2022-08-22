@@ -50,7 +50,7 @@ const DevicePage = () =>{
       <h2>Parametes</h2>
       <Row className='d-flex flex-column m-3'>
         {device.info.map((info,index)=>
-          <Row key={info.id} style={{background:index%2===0?'lightgray':'transparent',padding:10}} >{info.title}: {info.description}</Row>)}
+          <Row key={info.id} style={{background:index%2===0?'lightgray':'transparent',padding:10}} >{info.title}: {info.descriptions}</Row>)}
           
       </Row>
     </Container>

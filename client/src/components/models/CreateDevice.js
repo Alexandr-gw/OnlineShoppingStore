@@ -3,6 +3,7 @@ import {Modal, Button, Form, Dropdown, Row, Col} from 'react-bootstrap'
 import { Context } from '../../index.js';
 import { fetchType, fetchBrand, createDevice } from '../../http/deviceAPI';
 import { observer } from "mobx-react-lite";
+//import {FormData} from "formdata-node"
 
 
 
@@ -17,6 +18,7 @@ const [price, setPrice] = useState(0)
 const [file, setFile] = useState(null)
 
 
+
 useEffect(()=>{
   fetchType().then(data=> device.setType(data))
   fetchBrand().then(data=> device.setBrands(data))
@@ -25,7 +27,7 @@ useEffect(()=>{
 
 
 const addInfo = () => {
-  setInfo([...info, {title: '' , description: '' , number: Date.now() }])
+  setInfo([...info, {title: '' , descriptions: '' , number: Date.now() }])
   
 }
 
@@ -43,9 +45,9 @@ const selectFile = e =>{
 }
 
 const addDevice =()=>{
-  
+
   const formData = new FormData()
-  
+
   formData.append('name',name)
   formData.append('price',`${price}`)
   formData.append('brandId',device.selectedBrand.id)
@@ -57,8 +59,8 @@ const addDevice =()=>{
     console.log('price',`${price}`)
     console.log('brandId',device.selectedBrand.id)
     console.log('typeId',device.selectedType.id)
-    console.log('img!!!',file, 'selectFile&&&',file)
-    console.log('info!!',JSON.stringify(info))
+    console.log('img',file)
+    console.log('info',JSON.stringify(info))
  // -------------
   createDevice(formData).then(data=>onHide())
 }
@@ -90,7 +92,7 @@ const addDevice =()=>{
         </Dropdown>
         <Form.Control className='mt-3 mb-2' placeholder='Enter device name' value = {name} onChange={e=>setName(e.target.value)}/>
         <Form.Control className='mt-3 mb-2' placeholder='Enter price name' type='number' value = {price} onChange={e=>setPrice(Number(e.target.value))}/>
-        <Form.Control className='mt-3 mb-2' type='file' accept='image/jpg' onChange={selectFile}/>
+        <Form.Control className='mt-3 mb-2' type='file' onChange={selectFile}/>
         <hr/>
         <Button variant="outline-dark" onClick={addInfo}>Add New Parameter</Button>
         
@@ -100,7 +102,7 @@ const addDevice =()=>{
               <Form.Control value={i.title} onChange={(e)=>changeInfo('title',e.target.value, i.number)} placeholder="Enter title name"/>
             </Col>
             <Col md={4}>
-              <Form.Control value={i.description} onChange={(e)=>changeInfo('description',e.target.value, i.number)} placeholder="Enter discription"/>
+              <Form.Control value={i.descriptions} onChange={(e)=>changeInfo('descriptions',e.target.value, i.number)} placeholder="Enter discription"/>
             </Col>
             <Col md={4}>
                 <Button 

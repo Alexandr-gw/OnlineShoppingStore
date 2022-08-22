@@ -2,6 +2,7 @@ const uuid = require('uuid')
 const path = require('path')
 const {Device, DeviceInfo} = require ('../models/models.js');
 const ApiError = require ('../Error/ApiError');
+const { isArray } = require('util');
 
 class DeviceController{
 
@@ -11,22 +12,27 @@ class DeviceController{
       const {img} = req.files
       let fileName = uuid.v4()+'.jpg'
       img.mv(path.resolve(__dirname, '..','static', fileName))
+      const device = await Device.create({name, price, brandId, typeId,img:fileName})
+      let newinfo = JSON.parse(info)
+      console.log('---BODY:', newinfo,'---BODY.JSON:', JSON.parse(info),'---inf0',info)
+        if(newinfo){ ( 
+        newinfo.forEach(i=>
 
-        if(info){info=JSON.parse(
-          info.forEach(i=>
             DeviceInfo.create({
               title:i.title,
               descriptions:i.descriptions,
               deviceId: device.id
             })
+    
           ))
         }
 
-      const device = await Device.create({name, price, brandId, typeId,img:fileName})
+      
 
       return res.json(device)
     }catch (e){
     next(ApiError.badRequest(e.message))
+    
       }
   }
 

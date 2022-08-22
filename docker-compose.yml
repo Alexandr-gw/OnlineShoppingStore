@@ -18,7 +18,7 @@ services:
     depends_on:
       - server
   #  network_mode: host
-  # restart: always
+    restart: always
   server:
     container_name: server_shop
     image: server:0.0.1 
@@ -45,7 +45,7 @@ services:
     #  - ./src/node_modules:/usr/app/node_modules
     depends_on:
       - postgres
-   # restart: always
+    restart: always
   postgres:
     container_name: postgres_shop
     image: "postgres"
@@ -63,7 +63,7 @@ services:
     
    
     
-    #restart: always
+    restart: always
 
 volumes:
   pgdata: {}
